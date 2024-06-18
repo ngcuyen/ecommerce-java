@@ -53,6 +53,13 @@ public class ProductService {
         productRepository.deleteById(id);
     }
 
+    public void viewProductById(Long id) {
+        if (!productRepository.existsById(id)) {
+            throw new IllegalStateException("Product with ID " + id + " does not exist.");
+        }
+        productRepository.findById(id);
+    }
+
     public String saveImage(MultipartFile imageFile){
         try {
             String uploadDir ="src/main/resources/static/images/";

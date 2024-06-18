@@ -153,4 +153,14 @@ public class ProductController {
         productService.deleteProductById(id);
         return "redirect:/products";
     }
+
+    @GetMapping("/{id}")
+    public String detailProduct(@PathVariable Long id, Model model) {
+        Product product = productService.getProductById(id)
+                .orElseThrow(() -> new IllegalArgumentException("Invalid product Id:" + id));
+        model.addAttribute("product", product);
+
+        return "/products/product-detail";
+    }
+
 }

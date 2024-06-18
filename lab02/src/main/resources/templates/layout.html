@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
-      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security5">
 <head>
   <meta charset="UTF-8">
   <title>Layout</title>
@@ -9,34 +10,195 @@
 
   <link rel="stylesheet"
         href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet"
+        href="../static/css/style.css">
+  <link
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+          rel="stylesheet"
+  />
 </head>
 <body>
 <nav class="navbar navbar-expand-lg navbar-light bg-dark border-bottom border-body" data-bs-theme="dark">
   <div class="container-fluid">
     <a class="navbar-brand" href="#">WBH</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+            aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
     <div class="collapse navbar-collapse" id="navbarSupportedContent">
       <ul class="navbar-nav me-auto mb-2 mb-lg-0">
         <li class="nav-item">
           <a class="nav-link active" aria-current="page"
              href="/products">Product</a>
         </li>
+        <li class="nav-item" sec:authorize="hasAnyAuthority('ADMIN')">
+          <a th:href="@{/products/add}" class="nav-link text-white">
+            Add New Product</a>
+        </li>
         <li class="nav-item">
           <a class="nav-link active" aria-current="page"
              href="/categories">Category</a>
+        </li>
+        <li class="nav-item" sec:authorize="hasAnyAuthority('ADMIN')">
+          <a th:href="@{/categories/add}" class="nav-link text-white">
+            Add New Category</a>
         </li>
         <li class="nav-item">
           <a class="nav-link active" aria-current="page"
              href="/cart">Cart</a>
         </li>
       </ul>
+      <ul class="navbar-nav ms-auto mb-2 mb-lg-0 align-items-center">
+        <li class="nav-item d-flex align-items-center" sec:authorize="isAuthenticated()">
+            <span class="navbar-text text-white">
+            Xin chào, <span sec:authentication="name" style="margin-right: 20px;"></span>
+            </span>
+        </li>
+        <li class="nav-item" sec:authorize="isAuthenticated()">
+          <form th:action="@{/logout}" method="post">
+            <button class="btn btn-outline-light" type="submit">Logout</button>
+          </form>
+        </li>
+        <li class="nav-item" sec:authorize="!isAuthenticated()">
+          <a class="btn btn-outline-light" href="/login">Login</a>
+        </li>
+      </ul>
     </div>
   </div>
 </nav>
-<div class="container">
-  <section layout:fragment="content">
+<div class="container" style="min-height:100vh;">
+  <div layout:fragment="content">
     &lt;!&ndash; Content will be replaced by each specific page &ndash;&gt;
-  </section>
+  </div>
 </div>
+<!-- Start Footer Section -->
+<footer class="footer-section bg-dark ">
+  <div class="container relative text-white" style="margin-top: 55px;">
+    <div class="row">
+      <div class="col-lg-8">
+        <div class="subscription-form " style="margin-top: 55px;">
+          <h3 class="d-flex align-items-center">
+            <span class="me-1"></span>
+              <span>Subscribe to Newsletter</span>
+          </h3>
+
+          <form action="#" class="row g-3">
+            <div class="col-auto">
+              <input
+                      type="text"
+                      class="form-control"
+                      placeholder="Enter your name"
+              />
+            </div>
+            <div class="col-auto">
+              <input
+                      type="email"
+                      class="form-control"
+                      placeholder="Enter your email"
+              />
+            </div>
+            <div class="col-auto">
+              <button class="btn btn-primary">
+                <span class="fa fa-paper-plane"></span>
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+
+    <div class="row g-5 mb-5">
+      <div class="col-lg-4">
+        <div class="mb-4 footer-logo-wrap">
+
+        </div>
+        <p class="mb-4">
+          Donec facilisis quam ut purus rutrum lobortis. Donec vitae odio
+          quis nisl dapibus malesuada. Nullam ac aliquet velit. Aliquam
+          vulputate velit imperdiet dolor tempor tristique. Pellentesque
+          habitant
+        </p>
+
+        <ul class="list-unstyled custom-social d-flex text-white">
+          <li>
+            <a href="#"><span class="fa fa-brands fa-facebook-f"></span></a>
+          </li>
+          <li>
+            <a href="#"><span class="fa fa-brands fa-twitter"></span></a>
+          </li>
+          <li>
+            <a href="#"><span class="fa fa-brands fa-instagram"></span></a>
+          </li>
+          <li>
+            <a href="#"><span class="fa fa-brands fa-linkedin"></span></a>
+          </li>
+        </ul>
+      </div>
+
+      <div class="col-lg-8">
+        <div class="row links-wrap">
+          <div class="col-6 col-sm-6 col-md-3">
+            <ul class="list-unstyled">
+              <li><a href="#" class="text-white">About us</a></li>
+              <li><a href="#" class="text-white">Services</a></li>
+              <li><a href="#" class="text-white">Blog</a></li>
+              <li><a href="#" class="text-white">Contact us</a></li>
+            </ul>
+          </div>
+
+          <div class="col-6 col-sm-6 col-md-3">
+            <ul class="list-unstyled">
+              <li><a href="#" class="text-white">Support</a></li>
+              <li><a href="#" class="text-white">Knowledge base</a></li>
+              <li><a href="#" class="text-white">Live chat</a></li>
+            </ul>
+          </div>
+
+          <div class="col-6 col-sm-6 col-md-3">
+            <ul class="list-unstyled">
+              <li><a href="#" class="text-white">Jobs</a></li>
+              <li><a href="#" class="text-white">Our team</a></li>
+              <li><a href="#" class="text-white">Leadership</a></li>
+              <li><a href="#" class="text-white">Privacy Policy</a></li>
+            </ul>
+          </div>
+
+          <div class="col-6 col-sm-6 col-md-3">
+            <ul class="list-unstyled">
+              <li><a href="#" class="text-white">Nordic Chair</a></li>
+              <li><a href="#" class="text-white">Kruzo Aero</a></li>
+              <li><a href="#" class="text-white">Ergonomic Chair</a></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="border-top copyright">
+      <div class="row pt-4">
+        <div class="col-lg-6">
+          <p class="mb-2 text-center text-lg-start">
+            Copyright &copy;
+            <script>
+              document.write(new Date().getFullYear());
+            </script>
+            . All Rights Reserved.
+            <!-- License information: https://untree.co/license/ -->
+          </p>
+        </div>
+
+        <div class="col-lg-6 text-center text-lg-end">
+          <ul class="list-unstyled d-inline-flex ms-auto">
+            <li class="me-4"><a href="#" class="text-white">Terms &amp; Conditions</a></li>
+            <li><a href="#" class="text-white">Privacy Policy</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</footer>
+<!-- End Footer Section -->
 <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js">
 </script>
